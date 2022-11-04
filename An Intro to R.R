@@ -2,15 +2,13 @@
 # to start over use rm(list = ls())
 library(ggplot2)
 
-X512 <- read_excel("D:/Dropbox/512.xlsx")
-dat <- X512
-dat <- dat[1:361,]
+x <- 1:10000
+y <- .25*x + rnorm(10000,0,300)
+z <- rep("a",10000)
+z[5001:10000] <- "b"
+zz <- factor(z)
+dat <- data.frame(x,y,z,zz)
 
-dat$Fid <- factor(dat$id)
-dat$Ft <- factor(dat$t)
-dat$Feu1 <- factor(dat$eu1)
-
-ggplot() +geom_point(aes(lngdp,`growth rate`,shape = Ft),data= dat)+
-  theme_bw()+
-  facet_grid(~eu1)+
-  geom_smooth(aes(lngdp,`growth rate`),data=dat, method = "lm",se=F)
+ggplot(dat,aes(x,y))+geom_point()+
+  geom_smooth()
+summary(lm(y~x,data=dat))
