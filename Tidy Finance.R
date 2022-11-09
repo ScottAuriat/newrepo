@@ -3,14 +3,14 @@
 library(tidyverse)
 library(tidyquant)
 library(quantmod)
-
 # Chap 1 ----
-prices <- tq_get("AAPL",from = "2000-01-10" )
+DOW_ticker <- tq_index("DOW")
+DOW_prices <- tq_get(DOW_ticker, from = "2000-01-01")
 
-prices |> ggplot(aes(date,adjusted))+geom_line()+
-  labs(x= "",y="", title = "Apple since 2000")
+DOW_prices |> 
+  ggplot(aes(date,adjusted,col = symbol))+
+  geom_line()+ theme_void() +
+  theme(legend.position = "none")+
+  labs(x= "",y="", title = "DOW Jones")
 
-rerturns <- prices |>
-  arrange(date)|>
-  mutate(r = adjusted/lag(adjusted) - 1) |>
-  select(symbol,date,r)
+
