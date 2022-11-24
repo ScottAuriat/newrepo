@@ -7,10 +7,18 @@ library(quantmod)
 DOW_ticker <- tq_index("DOW")
 DOW_prices <- tq_get(DOW_ticker, from = "2000-01-01")
 
-DOW_prices |> 
-  ggplot(aes(date,adjusted,col = symbol))+
-  geom_line()+ theme_void() +
-  theme(legend.position = "none")+
-  labs(x= "",y="", title = "DOW Jones")
+volume <- DOW_prices |>
+  group_by(date) |>
+  summarize(volume = sum(volume*close/1e9))
 
+volume |>
+  ggplot(aes(date,volume))+
+  geom_line()
 
+volume |>
+  ggplot(aes(log(volume),log(lag(volume))))+
+  geom_point()+geom_smooth(method="lm")+
+  labs(x="natural log of volume")+
+  theme_bw()
+ version
+ packageStatus()
