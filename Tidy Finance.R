@@ -5,26 +5,11 @@ library(tidyquant)
 library(quantmod)
 # Chap 1 ----
 
-SNP500i <- tq_index("SP500")
-SNP500 <- tq_get(SNP500i)
+ticker <- tq_index("DOW")
+ticker
 
-SNP500r <- SNP500 |>
-  group_by(symbol) |>
-  mutate(r = adjusted/lag(adjusted))|>
-  select(symbol,date,r)
-
-SNP500r <- drop_na(SNP500r,r)
-SNP500r <- mutate(SNP500r,r = r*100)
-
-volume <- SNP500 |>
-  group_by(date) |>
-  summarize(volume = sum(volume*close/1e9))
-
-volume |>
-  ggplot(aes(date,volume))+geom_line()
-
-volume |>
-  ggplot(aes(log(volume),log(lag(volume))))+geom_point()+
-  labs(x="",y="",title = "Persistance of Volume")+
-  theme_bw()+
-  geom_abline(aes(intercept= 0,slope = 1))
+index_prices <- tq_get(ticker,
+                       get = "stock.prices",
+                       from = "2000-01-01",
+                       to ="2022-12-31"
+                       )
