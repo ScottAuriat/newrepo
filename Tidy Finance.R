@@ -5,11 +5,19 @@ library(tidyquant)
 library(quantmod)
 # Chap 1 ----
 
-ticker <- tq_index("DOW")
-ticker
+DOW <- tq_index("DOW")
+DOW <- tq_get(DOW,
+              from = "2000-01-01")
 
-index_prices <- tq_get(ticker,
-                       get = "stock.prices",
-                       from = "2000-01-01",
-                       to ="2022-12-31"
-                       )
+DOWr <- DOW |>
+  group_by(symbol) |>
+  mutate(r = adjusted/lag(adjusted))|>
+  select(symbol, date,r) |>
+  drop_na(r)
+
+DOW |> ggplot(aes(date,adjusted,col = symbol)) +geom_line()+
+  labs(x="",y="",title= "DOW")+
+  theme_bw()+
+  theme(legend.position = "none")+
+  geom_hline(yintercept = 100)
+
