@@ -21,3 +21,4 @@ DOW |> ggplot(aes(date,adjusted,col = symbol)) +geom_line()+
   theme(legend.position = "none")+
   geom_hline(yintercept = 100)
 
+## test 
