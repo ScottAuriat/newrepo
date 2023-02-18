@@ -1,5 +1,5 @@
 install.packages("crypto2")
 library(crypto2)
-x <- crypto_listings()
+lx <- crypto_listings()
 xx <- crypto_global_quotes()
 xxx <- crypto_history()
